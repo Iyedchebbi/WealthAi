@@ -1,7 +1,10 @@
 
-// Initialize process.env polyfill BEFORE any other imports
-(window as any).process = (window as any).process || { env: {} };
-(window as any).process.env = (window as any).process.env || {};
+// Safely polyfill process.env for browser environments without overwriting existing globals
+if (typeof (window as any).process === 'undefined') {
+  (window as any).process = { env: {} };
+} else if (typeof (window as any).process.env === 'undefined') {
+  (window as any).process.env = {};
+}
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
