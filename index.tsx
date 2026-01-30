@@ -1,12 +1,11 @@
 
+// Initialize process.env polyfill BEFORE any other imports
+(window as any).process = (window as any).process || { env: {} };
+(window as any).process.env = (window as any).process.env || {};
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-
-// Polyfill process.env for browser environments to prevent ReferenceErrors
-// The actual API_KEY should be set in Netlify's Environment Variables
-(window as any).process = (window as any).process || { env: {} };
-(window as any).process.env = (window as any).process.env || {};
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {

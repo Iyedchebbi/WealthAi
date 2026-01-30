@@ -1,11 +1,11 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Always use named parameter for apiKey and obtain it exclusively from process.env.API_KEY
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export async function getFinancialInsight(type: string, inputs: any, result: any) {
   try {
+    // Initialize inside the function to ensure process.env is defined at runtime
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    
     const prompt = `
       Act as a world-class senior wealth manager and quantitative analyst. 
       Analyze the following ${type} calculation results for a client:
@@ -21,13 +21,11 @@ export async function getFinancialInsight(type: string, inputs: any, result: any
       Format: Use Markdown. Use bolding for key figures. Keep it between 150-180 words.
     `;
 
-    // Always use ai.models.generateContent with both model name and prompt
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: prompt,
     });
 
-    // Directly access the text property as it is a getter, not a method
     return response.text;
   } catch (error) {
     console.error("AI Insight Error:", error);
